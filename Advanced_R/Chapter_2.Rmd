@@ -1,0 +1,58 @@
+---
+title: "Chapter 2"
+output: html_notebook
+---
+
+# Chapter 2
+
+Pre-requisite package.
+
+```{r}
+install.packages("lobstr")
+```
+## 2.2.2 Exercises
+
+### Explain the relationship between a, b, c, and d.
+
+```{R}
+a <- 1:10
+b <- a
+c <- b
+d <- 1:10
+```
+
+Initial expectations: I expect a, b, and c to be pointing to the same memory location for the vector 1:10. I expect d to be pointing elsewhere.
+
+```{R}
+glue::glue("a: {lobstr::obj_addr(a)}")
+glue::glue("b: {lobstr::obj_addr(b)}")
+glue::glue("c: {lobstr::obj_addr(c)}")
+glue::glue("d: {lobstr::obj_addr(d)}")
+```
+Correct!
+
+If I change a value in c, then a and b should point to same place, but c should change.
+
+```{R}
+c[5] <- 0 
+glue::glue("a: {lobstr::obj_addr(a)}")
+glue::glue("b: {lobstr::obj_addr(b)}")
+glue::glue("c: {lobstr::obj_addr(c)}")
+glue::glue("d: {lobstr::obj_addr(d)}")
+```
+Correct!
+
+Strings are supposed to be different. According to the book, they point at a string set.
+
+```{R}
+a <- "a"
+b <- "ab"
+c <- "a"
+d <- "ba"
+glue::glue("a: {lobstr::obj_addr(a)}")
+glue::glue("b: {lobstr::obj_addr(b)}")
+glue::glue("c: {lobstr::obj_addr(c)}")
+glue::glue("d: {lobstr::obj_addr(d)}")
+```
+Interesting. a and c are the same string. Based on the book, I would think these would be pointing at the same location. It's expected that b and d would be different and they are.
+
